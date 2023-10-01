@@ -6,9 +6,11 @@ import ProductRoutes from './router/productMongo.routes.js'
 import CartManager from './dao/db/CartManager.js'
 import ChatsRoutes from './router/chat.routes.js'
 import CartRoutes from './router/cartMongo.routes.js'
+import sessionRouter from './router/session.router.js';
 import ProductManager from './dao/db/ProductManager.js'
 import ViewsRouter from './router/views.routes.js'
-import { FileStore } from "session-file-store"
+// import { FileStore } from "session-file-store"
+import MongoStore from "connect-mongo"
 import session from "express-session"
 import mongoose from "mongoose"
 import { uploader } from './dao/middlewares/multer.js'
@@ -19,7 +21,7 @@ const productManager = new ProductManager();
 const cartManager = new CartManager();
 const port = 8080
 const app = express()
-const fileStore = FileStore(session)
+// const fileStore = FileStore(session)
 
 //Creacion del servidorHTTP
 const HTTPserver = app.listen(port, () =>
@@ -108,7 +110,11 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use(session({
-  store: new fileStore({ path: "/sessions", ttl: 100, retries: 0 }),
+  // store: new fileStore({ path: "/sessions", ttl: 100, retries: 0 }),
+  store: MongoStore.create({
+    mongoUrl: 'mongodb+srv://albertsleyther:09NbqGe9gecOLTBy@ecommerce.6lrddnh.mongodb.net/?retryWrites=true&w=majority',
+    ttl: 15   ,
+  }),
   secret: 'secretCoder',
   resave: true,
   saveUninitialized: true
@@ -119,9 +125,18 @@ app.use('/api/products', ProductRoutes)
 app.use('/api/carts', CartRoutes)
 app.use('/api/chats', ChatsRoutes)
 app.use('/', ViewsRouter)
+app.use('/api', sessionRouter);
+
+// app.get('/login', (req, res) => {
+//   if (req.session.isLogged) {
+//     return res.send('ya estas logheado');
+//   }
+//   req.session.isLogged = true
+//   res.send("acabas de logear")
+
+// })
 
 app.get('/cookies', (req, res) => {
-
   res.render("cookies", {
     title: "cookies",
     style: "cookies.css"
@@ -153,5 +168,5 @@ app.get('/root', (req, res) => {
   }
 });
 
-//  socketEvents(Socketserverio)
+ //socketEvents(Socketserverio)
 

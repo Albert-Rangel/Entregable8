@@ -2,7 +2,6 @@ import Router from "express"
 import ProductManager from '../dao/fs/ProductManager.js'
 const productManager = new ProductManager('./src/dao/models/productos.json');
 const ProductRoute = Router();
-console.log("entro en el productroutes")
 
 // ProductRoute.get('/', async function (req, res) {
 
