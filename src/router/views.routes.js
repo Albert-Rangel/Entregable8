@@ -2,7 +2,8 @@ import express, { Router } from "express"
 import { uploader } from '../dao/middlewares/multer.js'
 import ProductManager from '../dao/db/ProductManager.js'
 import CartManager from '../dao/db/CartManager.js'
-
+import publicRoutes from "../dao/middlewares/publicRoutes.js"
+import privateRoutes from "../dao/middlewares/privateRoutes.js"
 
 const productManager = new ProductManager();
 const cartManager = new CartManager()
@@ -27,9 +28,15 @@ router.get("/home", async (req, res) => {
 })
 
 router.get("/products", async (req, res) => {
+    const firstname = req.session.firstname;
+    const lastname = req.session.lastname;
+    const age = req.session.age;
+    const email_ = req.session.email;
+
     res.render("catalog", {
         title: "Catalog",
-        style: "home.css"
+        style: "home.css",
+        firstname, lastname, age, email_
     })
 })
 
@@ -53,31 +60,38 @@ router.get("/carts/:cid", async (req, res) => {
     })
 })
 
-router.get('/login', (req, res) => {
-    if (req.session.isLogged) {
-      return res.redirect('/profile');
-    }
-  
-    res.render('login');
-  });
-  
-  router.get('/signup', (req, res) => {
-    if (req.session.isLogged) {
-      return res.redirect('/profile');
-    }
-  
-    res.render('signup');
-  });
-  
-  router.get('/profile', (req, res) => {
-    if (!req.session.isLogged) {
-      return res.redirect('/login');
-    }
-  
-    const { username, email } = req.session;
+router.get('/login', publicRoutes, (req, res) => {
+
+    // res.render('login');
+    res.render("login", {
+        title: "Login Form",
+        style: "signup.css"
+    })
+});
+
+router.get('/logout', privateRoutes, (req, res) => {
+    req.session.destroy()
+    res.render("login", {
+        title: "Login Form",
+        style: "signup.css"
+    })
+});
+
+router.get('/signup', publicRoutes, (req, res) => {
+
+    // res.render('signup');
+    res.render("signup", {
+        title: "Signup Form",
+        style: "singup.css"
+    })
+});
+
+router.get('/profile', privateRoutes, (req, res) => {
+
+    const { firstname, lastname, age, email } = req.session;
     console.log(req.session);
-    res.render('profile', { username, email });
-  });
+    res.render('profile', { firstname, lastname, age, email });
+});
 
 
 function ManageAnswer(answer) {

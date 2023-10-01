@@ -1,8 +1,32 @@
-<form id="formProduct" class="form" style="display: none">
+{{!-- <form id="formProduct" class="form" style="display: none">
     <h2> Escriba el id del carrito en el cual desea agregar productos</h2>
     <input class="controls" type="text" name="cartID" id="cartID" placeholder="Ingrese id del carrito a usar">
     <button class="botons" type="submit" id="cartBoton">enviar</button>
-</form>
+</form> --}}
+
+
+<div id="carta">
+  <img src="https://i.pinimg.com/originals/66/79/b6/6679b67c5fb579305d74dadd2029441c.jpg" width="300px">
+  
+  <h1> Bienvenid@ {{firstname}} {{lastname}}</h1>
+ 
+  <div id="description">
+    <p>
+      {{email}}
+    </p>
+
+    <p>
+      {{age}}
+    </p>
+    {{!-- <a id="cerrar" href="#">x</a> --}}
+   </div>
+  
+  {{!-- <a href="#description" class="boton">
+    Read More
+  </a> --}}
+d</div>
+
+<a href="/logout">Cerrar Session</a>
 
 <div class="container-fluid" style="display: inline">
     <h2>Product Catalog</h2>

@@ -6,15 +6,26 @@
   <button value="submit">Registrarse</button>
 </form> --}}
 
-<form class="SignUp-form">
+<form action="http://localhost:8080/api/signup" method="post" class="SignUp-form">
   <div>
-    <label for="name">Name </label>
-    <input id="username" type="text" placeholder="FUlanito de tal" name="username" required />
+    <label for="firstname">First Name </label>
+    <input id="firstname" type="text" placeholder="FUlanitol" name="firstname" required />
+  </div>
+
+  <div>
+    <label for="lastname">Last Name </label>
+    <input id="lastname" type="text" placeholder="de tal" name="lastname" required />
   </div>
 
   <div>
     <label for="email">Email </label>
     <input id="email" type="email" placeholder="fulanitodetal@example.com" name="email" required />
+  </div>
+
+
+  <div>
+    <label for="age">Age </label>
+    <input id="age" type="number" name="age" required />
   </div>
 
   <div>

@@ -9,6 +9,7 @@ import CartRoutes from './router/cartMongo.routes.js'
 import sessionRouter from './router/session.router.js';
 import ProductManager from './dao/db/ProductManager.js'
 import ViewsRouter from './router/views.routes.js'
+import UserRouter from './router/user.router.js'
 // import { FileStore } from "session-file-store"
 import MongoStore from "connect-mongo"
 import session from "express-session"
@@ -16,6 +17,7 @@ import mongoose from "mongoose"
 import { uploader } from './dao/middlewares/multer.js'
 import socketEvents from "./socket/index.js"
 import cookieParser from "cookie-parser"
+import { userModel } from "./dao/models/user.model.js"
 
 const productManager = new ProductManager();
 const cartManager = new CartManager();
@@ -121,11 +123,13 @@ app.use(session({
 
 }))
 
+app.use('/api' , UserRouter)
 app.use('/api/products', ProductRoutes)
 app.use('/api/carts', CartRoutes)
 app.use('/api/chats', ChatsRoutes)
 app.use('/', ViewsRouter)
-app.use('/api', sessionRouter);
+
+// app.use('/api', sessionRouter);
 
 // app.get('/login', (req, res) => {
 //   if (req.session.isLogged) {
@@ -136,37 +140,37 @@ app.use('/api', sessionRouter);
 
 // })
 
-app.get('/cookies', (req, res) => {
-  res.render("cookies", {
-    title: "cookies",
-    style: "cookies.css"
-  })
-})
+// app.get('/cookies', (req, res) => {
+//   res.render("cookies", {
+//     title: "cookies",
+//     style: "cookies.css"
+//   })
+// })
 
-app.get('/getCookies', (req, res) => {
-  res.send(req.cookies)
-})
+// app.get('/getCookies', (req, res) => {
+//   res.send(req.cookies)
+// })
 
-app.post('/setCookies', (req, res) => {
-  const { nombre, valor } = req.body;
-  res.cookie(nombre, valor, { maxAge: 1000 * 10 }).send('Cookie creada');
-});
+// app.post('/setCookies', (req, res) => {
+//   const { nombre, valor } = req.body;
+//   res.cookie(nombre, valor, { maxAge: 1000 * 10 }).send('Cookie creada');
+// });
 
-app.get('/root', (req, res) => {
-  if (req.session?.nombre) {
-    console.log("entro en session activa")
-    const counter = req.session.counter;
-    req.session.counter = req.session.counter + 1;
-    res.send(`Hola ${req.session.nombre}, visitaste el sitio ${counter} veces`);
-  } else {
-    console.log("entro  primera sessiona")
+// app.get('/root', (req, res) => {
+//   if (req.session?.nombre) {
+//     console.log("entro en session activa")
+//     const counter = req.session.counter;
+//     req.session.counter = req.session.counter + 1;
+//     res.send(`Hola ${req.session.nombre}, visitaste el sitio ${counter} veces`);
+//   } else {
+//     console.log("entro  primera sessiona")
 
-    const nombre = req.query.nombre;
-    req.session.nombre = nombre;
-    req.session.counter = 1;
-    res.send(`Te damos la bienvenida`);
-  }
-});
+//     const nombre = req.query.nombre;
+//     req.session.nombre = nombre;
+//     req.session.counter = 1;
+//     res.send(`Te damos la bienvenida`);
+//   }
+// });
 
  //socketEvents(Socketserverio)
 
