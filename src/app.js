@@ -6,7 +6,6 @@ import ProductRoutes from './router/productMongo.routes.js'
 import CartManager from './dao/db/CartManager.js'
 import ChatsRoutes from './router/chat.routes.js'
 import CartRoutes from './router/cartMongo.routes.js'
-import sessionRouter from './router/session.router.js';
 import ProductManager from './dao/db/ProductManager.js'
 import ViewsRouter from './router/views.routes.js'
 import UserRouter from './router/user.router.js'
@@ -115,7 +114,7 @@ app.use(session({
   // store: new fileStore({ path: "/sessions", ttl: 100, retries: 0 }),
   store: MongoStore.create({
     mongoUrl: 'mongodb+srv://albertsleyther:09NbqGe9gecOLTBy@ecommerce.6lrddnh.mongodb.net/?retryWrites=true&w=majority',
-    ttl: 15   ,
+    ttl: 20   ,
   }),
   secret: 'secretCoder',
   resave: true,
@@ -129,7 +128,6 @@ app.use('/api/carts', CartRoutes)
 app.use('/api/chats', ChatsRoutes)
 app.use('/', ViewsRouter)
 
-// app.use('/api', sessionRouter);
 
 // app.get('/login', (req, res) => {
 //   if (req.session.isLogged) {

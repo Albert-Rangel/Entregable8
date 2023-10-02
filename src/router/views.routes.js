@@ -27,16 +27,19 @@ router.get("/home", async (req, res) => {
     })
 })
 
-router.get("/products", async (req, res) => {
+router.get("/products", privateRoutes, async (req, res) => {
+   console.log("entro en products en viewrouter")
     const firstname = req.session.firstname;
     const lastname = req.session.lastname;
     const age = req.session.age;
     const email_ = req.session.email;
+    const Rol = req.session.admin ? "Admin" : "User"
+
 
     res.render("catalog", {
         title: "Catalog",
         style: "home.css",
-        firstname, lastname, age, email_
+        firstname, lastname, age, email_, Rol
     })
 })
 
@@ -62,7 +65,7 @@ router.get("/carts/:cid", async (req, res) => {
 
 router.get('/login', publicRoutes, (req, res) => {
 
-    // res.render('login');
+    res.render('login');
     res.render("login", {
         title: "Login Form",
         style: "signup.css"
@@ -79,7 +82,6 @@ router.get('/logout', privateRoutes, (req, res) => {
 
 router.get('/signup', publicRoutes, (req, res) => {
 
-    // res.render('signup');
     res.render("signup", {
         title: "Signup Form",
         style: "singup.css"
@@ -88,9 +90,18 @@ router.get('/signup', publicRoutes, (req, res) => {
 
 router.get('/profile', privateRoutes, (req, res) => {
 
-    const { firstname, lastname, age, email } = req.session;
-    console.log(req.session);
-    res.render('profile', { firstname, lastname, age, email });
+    const firstname = req.session.firstname;
+    const lastname = req.session.lastname;
+    const age = req.session.age;
+    const email_ = req.session.email;
+    const Rol = req.session.admin ? "Admin" : "User"
+
+    res.render("catalog", {
+        title: "Catalog",
+        style: "home.css",
+        firstname, lastname, age, email_, Rol
+    })
+
 });
 
 
